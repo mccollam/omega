@@ -1,0 +1,12 @@
+# Print to the Onion OLED display, preserving newlines
+#
+# This allows piping data to the OLED display while preserving more complex
+# formatting.  It can be used in a pipe as it reads from stdin and then wraps
+# the data in the oled-exp format.
+#
+# NB: 'oled-exp -i' should be called *before* using this script.
+#
+# Example:
+#   ls -1 | ./oprint
+
+oled-exp -c write "`awk -vRS="\n" -vORS="\\\\\n" '1' $*`"
