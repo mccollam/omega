@@ -1,0 +1,31 @@
+# Quick and dirty progress bar for the Onion OLED display
+#
+# This allows you to visually display a progress bar on the bottom line
+# of the Onion OLED display.  It's not the most efficient way to do this
+# but works well enough.
+#
+# It expects a floating point number representing the progress, between 0 and 1.
+#
+# NB: 'oled-exp -i' should be called *before* using this script.
+#
+# Example:
+#   progress .5
+#  will show
+#   [==========         ]
+#  on the bottom line of the OLED display.
+#
+# BUGS
+#    No boundary or type checking is performed, so passing in no input,
+#    numbers less than 0 or greater than 1, strings, etc. is not handled.
+
+if [ $1 == 0 ]
+then
+    str="                   "
+else
+    num=$(echo $1 | awk '{ printf("%.0f", $1 * 19); }' -)
+    str=$(printf "%-${num}s" "=" | tr ' ' '=')$(printf "%-$(expr 19 - $num)s" " ")
+fi
+oled-exp cursor 7,0 write "["
+oled-exp cursor 7,1 write "$str"
+oled-exp cursor 7,20 write "]"
+
