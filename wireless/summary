@@ -1,0 +1,24 @@
+numscans=`grep -c "\*\*\*" results`
+uniquessids=`grep ESSID results | sort | uniq | wc -l`
+numwep=`grep -c "Encryption: WEP" results`
+numwpa=`grep -c "Encryption: WPA" results`
+nummixed=`grep -c "Encryption: mixed" results`
+numwpa2=`grep -c "Encryption WPA2" results`
+numnone=`grep -c "Encryption: none" results`
+numwpatkip=`grep "Encryption: WPA" results | grep -c TKIP`
+numwpa2tkip=`grep "Encryption: WPA2" results | grep -c TKIP`
+
+s1=`printf "%4s" $numscans`
+s2=`printf "%4s" $uniquessids`
+s3=`printf "%4s" $numnone`
+s4=`printf "%4s" $numwep`
+s5=`printf "%4s" $numwpa2`
+s6=`printf "%4s" $numwpatkip`
+
+echo "$s1 scans performed"
+echo "$s2 SSIDs detected"
+echo
+echo " $s3 none"
+echo " $s4 WEP"
+echo " $s5 WPA ($numwpatkip TKIP)"
+echo " $s6 mixed ($numwpa2tkip TKIP)"
